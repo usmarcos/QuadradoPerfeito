@@ -4,14 +4,16 @@ import java.util.Scanner;
 class Main {
     public static void main(String[] args) {
         //matriz teste (é um quadrado perfeito)
-//        int[][] matriz = { {20, 6, 7, 17},
-//                {9, 15, 14, 12},
-//                {13, 11, 10, 16},
-//                {8, 18, 19, 5} };
-        int [][] matriz = montarEPreencherQuadrado();
+        int[][] matriz = { {20, 6, 7, 17},
+                {9, 15, 14, 12},
+                {13, 11, 10, 16},
+                {8, 18, 19, 5} };
+     //   int [][] matriz = montarEPreencherQuadrado();
 
         metodoUm(matriz);
         metodoDois(matriz);
+        //mais otimizado
+        metodoTres(matriz);
 
     }
 
@@ -122,4 +124,39 @@ class Main {
         }
     }
 
+    private static void metodoTres(int[][] matriz) {
+        // verifica linhas
+        int somaEsperada = 0;
+        int somaDiagonalPrincipal = 0;
+        int somaDiagonalSecundaria = 0;
+        boolean controle = true;
+
+        for (int i = 0; i < matriz.length; i++) {
+            somaEsperada += matriz[0][i];
+        }
+
+        for (int i = 0; i < matriz.length; i++) {
+            int totalLinha = 0;
+            int totalColuna = 0;
+            //linha e coluna, invertendo i e j para mudar as posições de leitura
+            for (int j = 0; j < matriz.length; j++) {
+                totalLinha += matriz[i][j];
+                totalColuna += matriz[j][i];
+                if (i == j) {
+                    somaDiagonalPrincipal += matriz[j][i];
+                    somaDiagonalSecundaria += matriz[i][j];
+                }
+            }
+            if(totalLinha != somaEsperada && totalColuna != somaEsperada){
+                controle = false;
+                break;
+            }
+        }
+        //verificando se é um quadrado perfeito
+        if (controle && somaDiagonalPrincipal == somaEsperada && somaDiagonalSecundaria == somaEsperada) {
+            System.out.println("Quadrado perfeito");
+        } else {
+            System.out.println("Não é um quadrado perfeito");
+        }
+    }
 }
